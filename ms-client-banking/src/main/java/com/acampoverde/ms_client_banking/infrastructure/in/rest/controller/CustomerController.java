@@ -14,7 +14,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("/api/v1/customer")
+@RequestMapping("v1/customer")
 
 public class CustomerController {
     private final CustomerHandler customerHandler;
