@@ -21,11 +21,7 @@ import java.util.concurrent.TimeoutException;
 @Component
 public class RequestMessageAdapter implements IRequestMessagePort {
 
-  /*  private final KafkaTemplate<String, String> kafkaTemplate;
-    //private final String requestTopic;
-    private final ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate;
-*/
-    ///
+
     @Autowired
     private ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate;
 
@@ -35,32 +31,23 @@ public class RequestMessageAdapter implements IRequestMessagePort {
     @Value("${app.kafka.reply-topic}")
     private String replyTopic;
 
-   /* public RequestMessageAdapter(
-            KafkaTemplate<String, String> kafkaTemplate, ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate,
-            @Value("${kafka.topic.account-movements}") String requestTopic) {
-        this.kafkaTemplate = kafkaTemplate;
-        this.replyingKafkaTemplate = replyingKafkaTemplate;
-        this.requestTopic = requestTopic;
-    }*/
 
     @Override
-    public void sendMessage(String message) throws ExecutionException, InterruptedException, TimeoutException {
-//        System.out.println("Sending message to topic: " + requestTopic + " with content: " + message);
-//        //kafkaTemplate.send(requestTopic, message);
-//
-//        ProducerRecord<String, String> record = new ProducerRecord<>(requestTopic, message);
-//        RequestReplyFuture<String, String, String> replyFuture = replyingKafkaTemplate.sendAndReceive(record);
-//        ConsumerRecord<String, String> consumerRecord = replyFuture.get(10, TimeUnit.SECONDS); // espera max 10 segundos
-//
-//        System.out.println("Received reply: " + consumerRecord.value());
-//        //return consumerRecord.value();
-
-
-        String resp = enviarYRecibir("ahorita envio esta notaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    public void sendMessage(String message) {
+        String resp = null;
+        try {
+            resp = enviarYRecibir("ahorita envio esta notaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("Respuesta recibida: " + resp);
     }
 
-    public String enviarYRecibir(String solicitud) throws InterruptedException, ExecutionException, TimeoutException {
+    public String enviarYRecibir(String solicitud) throws ExecutionException, InterruptedException, TimeoutException {
         ProducerRecord<String, String> record = new ProducerRecord<>(requestTopic, solicitud);
         record.headers().add(new RecordHeader(KafkaHeaders.REPLY_TOPIC, replyTopic.getBytes()));
 

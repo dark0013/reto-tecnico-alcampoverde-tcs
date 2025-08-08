@@ -41,15 +41,7 @@ public class AccountService implements IAccountServicePort {
     @Override
     public Account saveAccount(Account account) {
         //antes de agurdar es importante consultar si el cliente existe
-        try {
-            requestMessagePort.sendMessage(account.getCustomerId().toString());
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (TimeoutException e) {
-            throw new RuntimeException(e);
-        }
+        requestMessagePort.sendMessage(account.getCustomerId().toString());
         return this.accountRepository.saveAccount(account);
     }
 
@@ -74,7 +66,6 @@ public class AccountService implements IAccountServicePort {
 
     @Override
     public void deleteAccount(Integer id) {
-        //verificar si la cuenta existe
         this.accountRepository.deleteAccount(id);
     }
 

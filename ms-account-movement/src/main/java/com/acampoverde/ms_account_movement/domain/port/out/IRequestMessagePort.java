@@ -5,5 +5,5 @@ import java.util.concurrent.TimeoutException;
 
 public interface IRequestMessagePort {
 
-    void sendMessage(String message) throws ExecutionException, InterruptedException, TimeoutException;
+    void sendMessage(String message);
 }
