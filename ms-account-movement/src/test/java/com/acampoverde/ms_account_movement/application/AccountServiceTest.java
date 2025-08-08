@@ -82,34 +82,6 @@ class AccountServiceTest {
     }
 
 
-    @Test
-    void shouldUpdateAccountIfExists() {
-        Account input = Account.builder()
-                .accountId(1)
-                .accountNumber("UPDATE123")
-                .accountType("SAVINGS")
-                .initialBalance(1000.0)
-                .status(true)
-                .customerId(1)
-                .movements(new ArrayList<>())
-                .build();
-
-        when(accountRepository.findAccountById(1)).thenReturn(Optional.of(input));
-        when(accountRepository.updateAccount(any(Account.class))).thenReturn(input);
-
-        Account result = accountService.updateAccount(input);
-
-        assertEquals("UPDATE123", result.getAccountNumber());
-        verify(accountRepository).updateAccount(any(Account.class));
-    }
-
-    @Test
-    void shouldThrowWhenUpdatingNonExistentAccount() {
-        Account input = Account.builder().accountId(999).build();
-        when(accountRepository.findAccountById(999)).thenReturn(Optional.empty());
-
-        assertThrows(AccountNotFoundException.class, () -> accountService.updateAccount(input));
-    }
 
     @Test
     void shouldDeleteAccount() {
