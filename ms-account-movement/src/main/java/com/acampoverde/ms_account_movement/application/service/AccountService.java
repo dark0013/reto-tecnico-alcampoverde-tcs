@@ -1,6 +1,7 @@
 package com.acampoverde.ms_account_movement.application.service;
 
 import com.acampoverde.ms_account_movement.application.exception.AccountNotFoundException;
+import com.acampoverde.ms_account_movement.application.exception.CustomerNotFoundException;
 import com.acampoverde.ms_account_movement.domain.model.Account;
 import com.acampoverde.ms_account_movement.domain.port.in.IAccountServicePort;
 import com.acampoverde.ms_account_movement.domain.port.out.IAccountRepositoryPort;
@@ -40,13 +41,18 @@ public class AccountService implements IAccountServicePort {
 
     @Override
     public Account saveAccount(Account account) {
-        //antes de agurdar es importante consultar si el cliente existe
-        requestMessagePort.sendMessage(account.getCustomerId().toString());
+        String customerExists = requestMessagePort.sendMessage(account.getCustomerId().toString());
+        if (customerExists == null || customerExists.isEmpty() || customerExists.equalsIgnoreCase("false")) {
+            throw new CustomerNotFoundException("No customer found with ID: " + account.getCustomerId());
+        }
         return this.accountRepository.saveAccount(account);
     }
 
     public Account updateAccount(Account account) {
-        //verificar si el cliente existe con una consulta al API customer
+        String customerExists = requestMessagePort.sendMessage(account.getCustomerId().toString());
+        if (customerExists == null || customerExists.isEmpty() || customerExists.equalsIgnoreCase("false")) {
+            throw new CustomerNotFoundException("No customer found with ID: " + account.getCustomerId());
+        }
         Optional<Account> existingAccountOpt = accountRepository.findAccountById(account.getAccountId());
         if (existingAccountOpt.isEmpty()) {
             throw new AccountNotFoundException("NO ACCOUNT FOUND");

@@ -1,10 +1,8 @@
 package com.acampoverde.ms_account_movement.infraestructure.in.exception;
 
 
-import com.acampoverde.ms_account_movement.application.exception.AccountMovementNotFoundException;
-import com.acampoverde.ms_account_movement.application.exception.AccountNotFoundException;
-import com.acampoverde.ms_account_movement.application.exception.InsufficientBalanceException;
-import com.acampoverde.ms_account_movement.application.exception.InvalidMovementTypeException;
+import com.acampoverde.ms_account_movement.application.exception.*;
+import com.acampoverde.ms_account_movement.infraestructure.out.messaging.exception.KafkaProducerRecivedException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -75,4 +73,23 @@ public class GlobalExceptionHandler {
                 "Bad Request", ex.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
+
+    @ExceptionHandler(KafkaProducerRecivedException.class)
+    public ResponseEntity<ErrorResponse> handleKafkaProducerException(KafkaProducerRecivedException ex, HttpServletRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Kafka Producer Error",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+
+    @ExceptionHandler(CustomerNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleAccountMovementNotFoundException(CustomerNotFoundException ex, HttpServletRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "Not Found", ex.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
 }

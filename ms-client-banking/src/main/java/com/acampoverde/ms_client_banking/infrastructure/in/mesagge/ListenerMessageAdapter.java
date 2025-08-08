@@ -1,30 +1,31 @@
 package com.acampoverde.ms_client_banking.infrastructure.in.mesagge;
 
+import com.acampoverde.ms_client_banking.domain.model.Customer;
+import com.acampoverde.ms_client_banking.domain.port.in.ICustomerServicePort;
 import com.acampoverde.ms_client_banking.domain.port.in.IlistenerMessagePort;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
+import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ListenerMessageAdapter implements IlistenerMessagePort {
 
-
-    @Override
-    public String listenMessage(String message) {
-
-        System.out.println("Received request message: " + message);
-
-        String response = "Respuesta al mensaje: " + message;
-        System.out.println("Sending response message: " + response);
-        return response;
-    }
-
+    private final ICustomerServicePort customerService;
 
     @KafkaListener(topics = "${app.kafka.request-topic}")
     @SendTo
-    public String escucharSolicitud(String solicitud) {
-        System.out.println("Solicitud recibida: " + solicitud);
-        return "Respuesta para " + solicitud;
+    @Override
+    public String listenMessage(String message) {
+        if (message == null || message.isEmpty()) {
+            return "false";
+        }
+        Customer customer = customerService.findCustomerById(Integer.valueOf(message));
+        if (customer == null) {
+            return "false";
+        }
+        return "true";
     }
+
 }

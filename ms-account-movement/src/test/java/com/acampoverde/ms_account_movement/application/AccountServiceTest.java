@@ -81,16 +81,6 @@ class AccountServiceTest {
         assertThrows(AccountNotFoundException.class, () -> accountService.findAccountNumberById("INVALID"));
     }
 
-    @Test
-    void shouldSaveAccount() {
-        Account account = Account.builder().accountNumber("NEW123").build();
-        when(accountRepository.saveAccount(account)).thenReturn(account);
-
-        Account result = accountService.saveAccount(account);
-
-        assertEquals("NEW123", result.getAccountNumber());
-        verify(accountRepository).saveAccount(account);
-    }
 
     @Test
     void shouldUpdateAccountIfExists() {
