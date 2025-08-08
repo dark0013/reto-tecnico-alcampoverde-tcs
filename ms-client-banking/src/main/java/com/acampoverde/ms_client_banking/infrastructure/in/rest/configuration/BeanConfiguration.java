@@ -1,4 +1,4 @@
-package com.acampoverde.ms_client_banking.infraestructure.in.configuration;
+package com.acampoverde.ms_client_banking.infrastructure.in.rest.configuration;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

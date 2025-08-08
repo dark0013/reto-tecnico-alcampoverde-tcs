@@ -1,4 +1,4 @@
-package com.acampoverde.ms_client_banking.infraestructure.in.dto;
+package com.acampoverde.ms_client_banking.infrastructure.in.rest.dto;
 
 
 import jakarta.validation.constraints.Min;

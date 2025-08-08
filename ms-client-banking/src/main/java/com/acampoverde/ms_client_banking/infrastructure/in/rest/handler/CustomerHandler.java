@@ -1,8 +1,8 @@
-package com.acampoverde.ms_client_banking.infraestructure.in.handler;
+package com.acampoverde.ms_client_banking.infrastructure.in.rest.handler;
 
 import com.acampoverde.ms_client_banking.domain.port.in.ICustomerServicePort;
-import com.acampoverde.ms_client_banking.infraestructure.in.dto.CustomerDto;
-import com.acampoverde.ms_client_banking.infraestructure.in.mapper.ICustomerMapper;
+import com.acampoverde.ms_client_banking.infrastructure.in.rest.dto.CustomerDto;
+import com.acampoverde.ms_client_banking.infrastructure.in.rest.mapper.ICustomerMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

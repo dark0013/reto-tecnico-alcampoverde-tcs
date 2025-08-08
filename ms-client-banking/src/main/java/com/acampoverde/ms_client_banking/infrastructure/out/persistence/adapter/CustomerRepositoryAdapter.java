@@ -1,11 +1,11 @@
-package com.acampoverde.ms_client_banking.infraestructure.out.persistence.adapter;
+package com.acampoverde.ms_client_banking.infrastructure.out.persistence.adapter;
 
 
 import com.acampoverde.ms_client_banking.domain.model.Customer;
 import com.acampoverde.ms_client_banking.domain.port.out.ICustomerRepositoryPort;
-import com.acampoverde.ms_client_banking.infraestructure.out.persistence.entity.CustomerEntity;
-import com.acampoverde.ms_client_banking.infraestructure.out.persistence.mapper.ICustomerRepositoryMapper;
-import com.acampoverde.ms_client_banking.infraestructure.out.persistence.repository.ICustomerRepository;
+import com.acampoverde.ms_client_banking.infrastructure.out.persistence.entity.CustomerEntity;
+import com.acampoverde.ms_client_banking.infrastructure.out.persistence.mapper.ICustomerRepositoryMapper;
+import com.acampoverde.ms_client_banking.infrastructure.out.persistence.repository.ICustomerRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

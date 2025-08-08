@@ -1,4 +1,4 @@
-package com.acampoverde.ms_client_banking.infraestructure.in.exception;
+package com.acampoverde.ms_client_banking.infrastructure.in.rest.exception;
 
 import java.time.LocalDateTime;
 

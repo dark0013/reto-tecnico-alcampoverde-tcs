@@ -1,4 +1,4 @@
-package com.acampoverde.ms_client_banking.infraestructure.out.persistence.entity;
+package com.acampoverde.ms_client_banking.infrastructure.out.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

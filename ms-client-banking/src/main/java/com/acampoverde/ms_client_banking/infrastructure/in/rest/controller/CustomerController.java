@@ -1,7 +1,7 @@
-package com.acampoverde.ms_client_banking.infraestructure.in.controller;
+package com.acampoverde.ms_client_banking.infrastructure.in.rest.controller;
 
-import com.acampoverde.ms_client_banking.infraestructure.in.dto.CustomerDto;
-import com.acampoverde.ms_client_banking.infraestructure.in.handler.CustomerHandler;
+import com.acampoverde.ms_client_banking.infrastructure.in.rest.dto.CustomerDto;
+import com.acampoverde.ms_client_banking.infrastructure.in.rest.handler.CustomerHandler;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
