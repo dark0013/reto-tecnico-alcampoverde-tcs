@@ -16,4 +16,18 @@ Antes de ejecutar el proyecto, asegúrate de tener instalados los siguientes com
 2. **Crear el esquema y el usuario**  
    - Crea una base de datos con el nombre `mediapp19`.  
    - Genera un usuario y concédele todos los permisos requeridos sobre este esquema para permitir su uso sin restricciones.
+     
+## Configuración de Base de Datos
+
+Ejecuta el siguiente script SQL para crear la base de datos y el usuario con los permisos correspondientes:
+
+```sql
+CREATE DATABASE IF NOT EXISTS mediapp19;
+
+CREATE USER IF NOT EXISTS 'admin'@'%' IDENTIFIED BY 'admin';
+
+GRANT ALL PRIVILEGES ON mediapp19.* TO 'admin'@'%';
+
+FLUSH PRIVILEGES;
+
 
