@@ -2,7 +2,12 @@
 
 Este proyecto incluye dos microservicios construidos con Spring Boot y JPA, encargados de administrar los datos de clientes y las cuentas junto con sus movimientos, todo implementado bajo una arquitectura basada en microservicios.
 
+### Puertos de los Servicios
 
+- **ms-account-movement:** puerto `9596`  
+- **ms-client-banking:** puerto `9595`  
+- **MySQL:** puerto `3306`
+  
 ## 🚀 Requisitos Previos  
 
 Antes de ejecutar el proyecto, asegúrate de tener instalados los siguientes componentes:  
