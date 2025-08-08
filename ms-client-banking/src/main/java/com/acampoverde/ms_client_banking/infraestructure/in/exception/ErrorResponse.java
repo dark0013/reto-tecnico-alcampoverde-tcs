@@ -17,7 +17,7 @@ public class ErrorResponse {
         this.path = path;
     }
 
-    // Getters y setters (puedes usar Lombok si prefieres)
+  
     public LocalDateTime getTimestamp() {
         return timestamp;
     }

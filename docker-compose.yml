@@ -24,7 +24,7 @@ services:
 
   ms-customer-tcs:
     build:
-      context: ./ms-customer-bnk
+      context: ./ms-client-banking
       dockerfile: Dockerfile
     container_name: micro1-tcs
     environment:
@@ -38,7 +38,7 @@ services:
 
   ms-account-tcs:
     build:
-      context: ./MsManagementAccounts
+      context: ./ms-account-movement
       dockerfile: Dockerfile
     container_name: micro2-tcs
     environment:
