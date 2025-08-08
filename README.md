@@ -4,9 +4,11 @@ Este proyecto incluye dos microservicios construidos con Spring Boot y JPA, enca
 
 ### Puertos de los Servicios
 
-- **ms-account-movement:** puerto `9596`  
-- **ms-client-banking:** puerto `9595`  
-- **MySQL:** puerto `3306`
+| Nombre               | Descripción                                              | Puerto |
+|----------------------|----------------------------------------------------------|--------|
+| ms-account-movement  | Microservicio encargado de gestionar cuentas y movimientos bancarios. | 9596   |
+| ms-client-banking    | Microservicio responsable de la administración de clientes bancarios. | 9595   |
+| MySQL                | Sistema gestor de base de datos relacional utilizado por los microservicios. | 3306   |
   
 ## 🚀 Requisitos Previos  
 
