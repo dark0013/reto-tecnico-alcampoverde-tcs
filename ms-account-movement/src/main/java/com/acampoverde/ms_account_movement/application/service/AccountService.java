@@ -8,6 +8,8 @@ import com.acampoverde.ms_account_movement.domain.port.out.IRequestMessagePort;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 public class AccountService implements IAccountServicePort {
 
@@ -39,7 +41,15 @@ public class AccountService implements IAccountServicePort {
     @Override
     public Account saveAccount(Account account) {
         //antes de agurdar es importante consultar si el cliente existe
-        requestMessagePort.sendMessage(account.getCustomerId().toString());
+        try {
+            requestMessagePort.sendMessage(account.getCustomerId().toString());
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
         return this.accountRepository.saveAccount(account);
     }
 
