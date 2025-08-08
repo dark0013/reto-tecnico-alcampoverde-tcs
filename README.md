@@ -1,3 +1,8 @@
+## Microservicios de Gestión de Clientes y Operaciones Bancarias
+
+Este proyecto incluye dos microservicios construidos con Spring Boot y JPA, encargados de administrar los datos de clientes y las cuentas junto con sus movimientos, todo implementado bajo una arquitectura basada en microservicios.
+
+
 ## 🚀 Requisitos Previos  
 
 Antes de ejecutar el proyecto, asegúrate de tener instalados los siguientes componentes:  
