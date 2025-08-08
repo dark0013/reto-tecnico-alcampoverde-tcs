@@ -4,6 +4,7 @@ import com.acampoverde.ms_account_movement.application.exception.AccountNotFound
 import com.acampoverde.ms_account_movement.domain.model.Account;
 import com.acampoverde.ms_account_movement.domain.port.in.IAccountServicePort;
 import com.acampoverde.ms_account_movement.domain.port.out.IAccountRepositoryPort;
+import com.acampoverde.ms_account_movement.domain.port.out.IRequestMessagePort;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,10 +12,13 @@ import java.util.Optional;
 public class AccountService implements IAccountServicePort {
 
     private final IAccountRepositoryPort accountRepository;
+    private final IRequestMessagePort requestMessagePort;
 
-    public AccountService(IAccountRepositoryPort accountRepository) {
+    public AccountService(IAccountRepositoryPort accountRepository, IRequestMessagePort requestMessagePort) {
         this.accountRepository = accountRepository;
+        this.requestMessagePort = requestMessagePort;
     }
+
 
     @Override
     public List<Account> findAllAccount() {
@@ -35,6 +39,7 @@ public class AccountService implements IAccountServicePort {
     @Override
     public Account saveAccount(Account account) {
         //antes de agurdar es importante consultar si el cliente existe
+        requestMessagePort.sendMessage(account.getCustomerId().toString());
         return this.accountRepository.saveAccount(account);
     }
 
