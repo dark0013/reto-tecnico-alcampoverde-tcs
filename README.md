@@ -8,9 +8,12 @@ Antes de ejecutar el proyecto, asegúrate de tener instalados los siguientes com
 | 🗄 **MySQL** | — | Base de datos relacional utilizada para persistir la información. |
 | 🛠 **Maven** | **3.6+** | Herramienta para gestionar dependencias y compilar el proyecto. |
 
-💡 **Tip:** Puedes verificar las versiones instaladas con los siguientes comandos:  
-```bash
-java -version
-mysql --version
-mvn -version
+## Configuración de la Base de Datos
+
+1. **Instalar MySQL**  
+   Verifica que MySQL esté correctamente instalado y funcionando en tu equipo.
+
+2. **Crear el esquema y el usuario**  
+   - Crea una base de datos con el nombre `mediapp19`.  
+   - Genera un usuario y concédele todos los permisos requeridos sobre este esquema para permitir su uso sin restricciones.
 
