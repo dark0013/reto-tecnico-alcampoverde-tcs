@@ -12,11 +12,11 @@ import java.util.List;
 
 public interface IMovementReportRepository extends JpaRepository<MovementEntity, Integer> {
 
-    @Query("SELECT new com.acampoverde.ms_account_movement.infraestructure.in.dto.MovementReportDto(" +
-            "m.date, a.accountNumber, a.accountType, a.initialBalance, m.balance, m.amount, m.status) " +
-            "FROM MovementEntity m JOIN m.account a " +
-            "WHERE a.accountId = :accountId AND m.date BETWEEN :startDate AND :endDate")
-    List<MovementReportDto> findByAccountIdAndDate(@Param("accountId") Integer accountId,
-                                                   @Param("startDate") LocalDate startDate,
-                                                   @Param("endDate") LocalDate endDate);
+//    @Query("SELECT new com.acampoverde.ms_account_movement.infraestructure.in.dto.MovementReportDto(" +
+//            "m.date, a.accountNumber, a.accountType, a.initialBalance, m.balance, m.amount, m.status) " +
+//            "FROM MovementEntity m JOIN m.account a " +
+//            "WHERE a.accountId = :accountId AND m.date BETWEEN :startDate AND :endDate")
+//    List<MovementReportDto> findByAccountIdAndDate(@Param("accountId") Integer accountId,
+//                                                   @Param("startDate") LocalDate startDate,
+//                                                   @Param("endDate") LocalDate endDate);
 }

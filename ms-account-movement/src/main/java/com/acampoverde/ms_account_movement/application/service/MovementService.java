@@ -6,10 +6,12 @@ import com.acampoverde.ms_account_movement.application.exception.InsufficientBal
 import com.acampoverde.ms_account_movement.application.exception.InvalidMovementTypeException;
 import com.acampoverde.ms_account_movement.domain.model.Account;
 import com.acampoverde.ms_account_movement.domain.model.Movement;
+import com.acampoverde.ms_account_movement.domain.model.MovementReport;
 import com.acampoverde.ms_account_movement.domain.port.in.IAccountMovementServicePort;
 import com.acampoverde.ms_account_movement.domain.port.out.IAccountMovementRepositoryPort;
 import com.acampoverde.ms_account_movement.domain.port.out.IAccountRepositoryPort;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,8 +42,8 @@ public class MovementService implements IAccountMovementServicePort {
                 .orElseThrow(() -> new AccountNotFoundException("Account not found with ID: " + movement.getAccount().getAccountId()));
 
 
-        Double currentBalance = account.getInitialBalance();
-        Double movementValue = movement.getAmount();
+        Double currentBalance = account.getAvailableBalance();
+        Double movementValue = movement.getTransactionAmount();
 
 
         if ("WITHDRAWAL".equalsIgnoreCase(movement.getMovementType())) {
@@ -49,7 +51,7 @@ public class MovementService implements IAccountMovementServicePort {
                 throw new InsufficientBalanceException("Insufficient balance");
             }
             currentBalance -= movementValue;
-            movement.setBalance(-movementValue);
+            movement.setAvailableBalance(-movementValue);
         } else if ("DEPOSIT".equalsIgnoreCase(movement.getMovementType())) {
             currentBalance += movementValue;
         } else {
@@ -57,11 +59,11 @@ public class MovementService implements IAccountMovementServicePort {
         }
 
 
-        account.setInitialBalance(currentBalance);
+        account.setAvailableBalance(currentBalance);
         accountRepository.saveAccount(account);
 
 
-        movement.setBalance(currentBalance);
+        movement.setAvailableBalance(currentBalance);
         movement.setDate(LocalDateTime.now());
 
         return accountMovementRepository.transaction(movement);
@@ -72,4 +74,12 @@ public class MovementService implements IAccountMovementServicePort {
         accountMovementRepository.deactivateMovement(movementId);
     }
 
+    @Override
+    public List<MovementReport> findByAccountIdAndDate(Integer accountId, LocalDate startDate, LocalDate endDate) {
+        return List.of();
+    }
+
+    public List<MovementReport> getMovementReportByAccountIdAndDate(Integer accountId, LocalDate startDate, LocalDate endDate) {
+        return null;
+    }
 }

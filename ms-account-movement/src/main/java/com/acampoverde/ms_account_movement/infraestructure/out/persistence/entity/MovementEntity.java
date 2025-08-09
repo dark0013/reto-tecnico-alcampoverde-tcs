@@ -18,8 +18,9 @@ public class MovementEntity {
     private Integer movementId;
     private LocalDate date;
     private String movementType;
-    private BigDecimal amount;
-    private BigDecimal balance;
+    private BigDecimal initialBalance;
+    private BigDecimal transactionAmount;
+    private BigDecimal availableBalance;
 
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)

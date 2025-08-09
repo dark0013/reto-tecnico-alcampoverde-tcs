@@ -44,8 +44,8 @@ class MovementHandlerTest {
                 .movementId(1)
                 .date(LocalDateTime.now())
                 .movementType("DEPOSIT")
-                .amount(100.0)
-                .balance(1500.0)
+                .transactionAmount(100.0)
+                .availableBalance(1500.0)
                 .status(true)
                 .build();
 
@@ -53,8 +53,7 @@ class MovementHandlerTest {
         movementDto.setMovementId(1);
         movementDto.setDate(movementDomain.getDate().toLocalDate());
         movementDto.setMovementType("DEPOSIT");
-        movementDto.setAmount(BigDecimal.valueOf(100.0));
-        movementDto.setBalance(BigDecimal.valueOf(1500.0));
+        movementDto.setTransactionAmount(BigDecimal.valueOf(100.0));
         movementDto.setAccountId(1);
     }
 

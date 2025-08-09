@@ -45,7 +45,7 @@ class AccountControllerIntegrationTest {
         mockDto.setAccountId(1);
         mockDto.setAccountNumber("1234567890");
         mockDto.setAccountType("SAVINGS");
-        mockDto.setInitialBalance(500.0);
+        mockDto.setAvailableBalance(500.0);
         mockDto.setStatus(true);
         mockDto.setCustomerId(101);
     }

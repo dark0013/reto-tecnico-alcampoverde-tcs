@@ -38,8 +38,7 @@ class MovementControllerUnitTest {
         dto.setMovementId(1);
         dto.setDate(LocalDate.now());
         dto.setMovementType("DEPOSIT");
-        dto.setAmount(new BigDecimal("100.00"));
-        dto.setBalance(new BigDecimal("1500.00"));
+        dto.setTransactionAmount(new BigDecimal("100.00"));
         dto.setAccountId(1);
         return dto;
     }

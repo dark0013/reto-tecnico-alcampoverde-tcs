@@ -61,7 +61,7 @@ public class AccountService implements IAccountServicePort {
                 .accountId(account.getAccountId())
                 .accountNumber(account.getAccountNumber())
                 .accountType(account.getAccountType())
-                .initialBalance(account.getInitialBalance())
+                .availableBalance(account.getAvailableBalance())
                 .status(account.getStatus())
                 .customerId(account.getCustomerId())
                 .movements(account.getMovements())

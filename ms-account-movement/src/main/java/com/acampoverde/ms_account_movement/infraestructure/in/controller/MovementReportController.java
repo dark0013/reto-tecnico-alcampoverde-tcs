@@ -31,4 +31,4 @@ public class MovementReportController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         return movementService.getMovementReportByAccountIdAndDate(accountId, startDate, endDate);
     }
-    }
+}

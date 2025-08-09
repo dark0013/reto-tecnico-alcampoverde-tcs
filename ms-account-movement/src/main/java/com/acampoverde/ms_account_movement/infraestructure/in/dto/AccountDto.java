@@ -9,14 +9,14 @@ public class AccountDto {
     private Integer accountId;
 
     @NotNull(message = "Account number cannot be null")
-    @Size(min = 10, max = 20, message = "Account number must be between 10 and 20 characters")
+    @Size(min = 6, max = 20, message = "Account number must be between 6 and 20 characters")
     private String accountNumber;
 
     @NotNull(message = "Account type cannot be null")
     private String accountType;
 
-    @NotNull(message = "Initial balance cannot be null")
-    private Double initialBalance;
+    @NotNull(message = "Available balance cannot be null")
+    private Double availableBalance;
 
     @NotNull(message = "Status cannot be null")
     private Boolean status;

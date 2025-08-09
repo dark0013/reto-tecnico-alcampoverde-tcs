@@ -39,7 +39,7 @@ class MovementServiceTest {
 
     @Test
     void shouldReturnMovementById() {
-        Movement movement = Movement.builder().movementId(1).movementType("DEPOSIT").amount(100.0).build();
+        Movement movement = Movement.builder().movementId(1).movementType("DEPOSIT").transactionAmount(100.0).build();
         when(movementRepository.findById(1)).thenReturn(Optional.of(movement));
 
         Movement result = movementService.findById(1);
@@ -60,8 +60,8 @@ class MovementServiceTest {
     @Test
     void shouldReturnAllMovements() {
         List<Movement> movements = List.of(
-                Movement.builder().movementId(1).movementType("DEPOSIT").amount(100.0).build(),
-                Movement.builder().movementId(2).movementType("WITHDRAWAL").amount(50.0).build()
+                Movement.builder().movementId(1).movementType("DEPOSIT").transactionAmount(100.0).build(),
+                Movement.builder().movementId(2).movementType("WITHDRAWAL").transactionAmount(50.0).build()
         );
         when(movementRepository.findAll()).thenReturn(movements);
 
@@ -75,10 +75,10 @@ class MovementServiceTest {
     @Test
     void shouldProcessDepositTransaction() {
         // Arrange
-        Account account = Account.builder().accountId(1).initialBalance(200.0).build();
+        Account account = Account.builder().accountId(1).availableBalance(200.0).build();
         Movement movement = Movement.builder()
                 .movementType("DEPOSIT")
-                .amount(100.0)
+                .transactionAmount(100.0)
                 .account(account)
                 .build();
 
@@ -88,7 +88,7 @@ class MovementServiceTest {
 
         Movement result = movementService.transaction(movement);
 
-        assertEquals(300.0, result.getBalance());
+        assertEquals(300.0, result.getAvailableBalance());
         verify(accountRepository).saveAccount(account);
         verify(movementRepository).transaction(any());
     }
@@ -96,10 +96,10 @@ class MovementServiceTest {
 
     @Test
     void shouldProcessWithdrawalTransaction() {
-        Account account = Account.builder().accountId(1).initialBalance(150.0).build();
+        Account account = Account.builder().accountId(1).availableBalance(150.0).build();
         Movement movement = Movement.builder()
                 .movementType("WITHDRAWAL")
-                .amount(50.0)
+                .transactionAmount(50.0)
                 .account(account)
                 .build();
 
@@ -109,7 +109,7 @@ class MovementServiceTest {
 
         Movement result = movementService.transaction(movement);
 
-        assertEquals(100.0, result.getBalance());
+        assertEquals(100.0, result.getAvailableBalance());
         verify(accountRepository).saveAccount(account);
         verify(movementRepository).transaction(any());
     }
@@ -117,10 +117,10 @@ class MovementServiceTest {
 
     @Test
     void shouldThrowWhenWithdrawalExceedsBalance() {
-        Account account = Account.builder().accountId(1).initialBalance(30.0).build();
+        Account account = Account.builder().accountId(1).availableBalance(30.0).build();
         Movement movement = Movement.builder()
                 .movementType("WITHDRAWAL")
-                .amount(50.0)
+                .transactionAmount(50.0)
                 .account(account)
                 .build();
 
@@ -134,10 +134,10 @@ class MovementServiceTest {
 
     @Test
     void shouldThrowWhenMovementTypeInvalid() {
-        Account account = Account.builder().accountId(1).initialBalance(100.0).build();
+        Account account = Account.builder().accountId(1).availableBalance(100.0).build();
         Movement movement = Movement.builder()
                 .movementType("INVALID")
-                .amount(50.0)
+                .transactionAmount(50.0)
                 .account(account)
                 .build();
 
@@ -150,7 +150,7 @@ class MovementServiceTest {
     @Test
     void shouldThrowWhenAccountNotFound() {
         Account account = Account.builder().accountId(1).build();
-        Movement movement = Movement.builder().movementType("DEPOSIT").amount(100.0).account(account).build();
+        Movement movement = Movement.builder().movementType("DEPOSIT").transactionAmount(100.0).account(account).build();
 
         when(accountRepository.findAccountById(1)).thenReturn(Optional.empty());
 

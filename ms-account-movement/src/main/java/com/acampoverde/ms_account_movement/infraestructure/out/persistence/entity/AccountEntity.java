@@ -19,7 +19,7 @@ public class AccountEntity {
     private String accountNumber;
     @Column(length = 20, nullable = false)
     private String accountType;
-    private Double initialBalance;
+    private Double availableBalance;
     private Boolean status;
 
     @Column(name = "customer_id", nullable = false)

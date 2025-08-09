@@ -45,8 +45,7 @@ class MovementControllerIntegrationTest {
         mockDto.setMovementId(1);
         mockDto.setDate(LocalDate.now());
         mockDto.setMovementType("DEPOSIT");
-        mockDto.setAmount(new BigDecimal("100.00"));
-        mockDto.setBalance(new BigDecimal("1500.00"));
+        mockDto.setTransactionAmount(new BigDecimal("100.00"));
         mockDto.setAccountId(1);
     }
 

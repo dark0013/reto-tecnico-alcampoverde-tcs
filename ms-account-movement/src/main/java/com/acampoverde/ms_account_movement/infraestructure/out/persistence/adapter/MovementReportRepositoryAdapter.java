@@ -22,8 +22,8 @@ public class MovementReportRepositoryAdapter implements IMovementReportRepositor
 
     @Override
     public List<MovementReport> findByAccountIdAndDate(Integer accountId, LocalDate startDate, LocalDate endDate) {
-        List<MovementReportDto> dtos = movementReportRepository.findByAccountIdAndDate(accountId, startDate, endDate);
-
+        //List<MovementReportDto> dtos = movementReportRepository.findByAccountIdAndDate(accountId, startDate, endDate);
+        List<MovementReportDto> dtos = List.of(); // Placeholder for actual repository call
         return dtos.stream()
                 .map(dto -> MovementReport.builder()
                         .date(dto.getDate())

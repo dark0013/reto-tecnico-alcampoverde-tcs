@@ -12,8 +12,9 @@ public class Movement {
     private Integer movementId;
     private LocalDateTime date;
     private String movementType;
-    private Double amount;
-    private Double balance;
+    private Double initialBalance;
+    private Double transactionAmount;
+    private Double availableBalance;
     private Account account;
     private Boolean status;
 }

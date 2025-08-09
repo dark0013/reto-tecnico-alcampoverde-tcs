@@ -41,7 +41,7 @@ class AccountHandlerTest {
                 .accountId(1)
                 .accountNumber("1234567890")
                 .accountType("SAVINGS")
-                .initialBalance(500.0)
+                .availableBalance(500.0)
                 .status(true)
                 .customerId(101)
                 .build();
@@ -50,7 +50,7 @@ class AccountHandlerTest {
         accountDto.setAccountId(1);
         accountDto.setAccountNumber("1234567890");
         accountDto.setAccountType("SAVINGS");
-        accountDto.setInitialBalance(500.0);
+        accountDto.setAvailableBalance(500.0);
         accountDto.setStatus(true);
         accountDto.setCustomerId(101);
     }

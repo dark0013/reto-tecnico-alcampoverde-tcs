@@ -12,7 +12,7 @@ public class Account {
     private Integer accountId;
     private String accountNumber;
     private String accountType;
-    private Double initialBalance;
+    private Double availableBalance;
     private Boolean status;
     private Integer customerId;
     private List<Movement> movements;

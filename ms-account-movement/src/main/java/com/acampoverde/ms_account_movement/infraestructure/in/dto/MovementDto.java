@@ -20,13 +20,9 @@ public class MovementDto {
     @Size(min = 3, max = 20, message = "Movement type must be between 3 and 20 characters")
     private String movementType;
 
-    @NotNull(message = "Amount cannot be null")
+    @NotNull(message = "Transaction amount cannot be null")
     @DecimalMin(value = "0.01", message = "Amount must be greater than 0")
-    private BigDecimal amount;
-
-    @NotNull(message = "Balance cannot be null")
-    @DecimalMin(value = "0.00", message = "Balance cannot be negative")
-    private BigDecimal balance;
+    private BigDecimal transactionAmount;
 
     @NotNull(message = "Account ID cannot be null")
     private Integer accountId;
