@@ -1,70 +1,85 @@
 package com.acampoverde.ms_account_movement.infraestructure.controller;
 
-
 import com.acampoverde.ms_account_movement.infraestructure.in.controller.MovementController;
 import com.acampoverde.ms_account_movement.infraestructure.in.dto.MovementDto;
 import com.acampoverde.ms_account_movement.infraestructure.in.handler.MovementHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(MovementController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class MovementControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private MovementHandler movementTransaction;
-
+    @Autowired
     private ObjectMapper objectMapper;
-    private MovementDto mockDto;
 
-    @BeforeEach
-    void setUp() {
-        objectMapper = new ObjectMapper();
+    @MockBean
+    private MovementHandler movementHandler;
 
-        mockDto = new MovementDto();
-        mockDto.setMovementId(1);
-        mockDto.setDate(LocalDate.now());
-        mockDto.setMovementType("DEPOSIT");
-        mockDto.setTransactionAmount(new BigDecimal("100.00"));
-        mockDto.setAccountId(1);
+    private MovementDto getSampleMovement() {
+        MovementDto dto = new MovementDto();
+        dto.setMovementId(1);
+        dto.setDate(LocalDate.of(2025, 8, 11));
+        dto.setMovementType("DEPOSIT");
+        dto.setTransactionAmount(BigDecimal.valueOf(500.00));
+        dto.setAccountId(10);
+        return dto;
     }
 
     @Test
-    void shouldReturnAllMovements() throws Exception {
-        when(movementTransaction.findAll()).thenReturn(List.of(mockDto));
+    @DisplayName("GET /v1/movements - return list of moves")
+    void testFindAllMovements() throws Exception {
+        List<MovementDto> movements = Collections.singletonList(getSampleMovement());
+        when(movementHandler.findAll()).thenReturn(movements);
 
         mockMvc.perform(get("/v1/movements"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].movementId").value(1))
                 .andExpect(jsonPath("$[0].movementType").value("DEPOSIT"))
-                .andExpect(jsonPath("$", Matchers.hasSize(1)));
+                .andExpect(jsonPath("$[0].transactionAmount").value(500.00));
     }
 
     @Test
-    void shouldDeactivateMovement() throws Exception {
-        doNothing().when(movementTransaction).deactivateMovement(1);
+    @DisplayName("POST /v1/movements - create a movement")
+    void testCreateMovement() throws Exception {
+        MovementDto request = getSampleMovement();
+        when(movementHandler.transaction(any(MovementDto.class))).thenReturn(request);
 
-        mockMvc.perform(delete("/v1/movements/1"))
+        mockMvc.perform(post("/v1/movements")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andExpect(header().exists("Location"));
+    }
+
+    @Test
+    @DisplayName("DELETE /v1/movements/{id} - disable a movement")
+    void testDeactivateMovement() throws Exception {
+        doNothing().when(movementHandler).deactivateMovement(eq(1));
+
+        mockMvc.perform(delete("/v1/movements/{id}", 1))
                 .andExpect(status().isNoContent());
     }
 }

@@ -12,10 +12,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class MovementReport {
     private LocalDate date;
+    private String customerName;
     private String accountNumber;
     private String accountType;
-    private BigDecimal balance;
+    private Double availableBalance;
     private Boolean status;
-    private BigDecimal amount;
-    private BigDecimal initialBalance;
+    private BigDecimal transactionAmount;
+    private BigDecimal movementAvailableBalance;
 }

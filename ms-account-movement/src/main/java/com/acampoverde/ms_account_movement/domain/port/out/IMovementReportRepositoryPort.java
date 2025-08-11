@@ -5,5 +5,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface IMovementReportRepositoryPort {
-    List<MovementReport> findByAccountIdAndDate(Integer accountId, LocalDate startDate, LocalDate endDate);
+//    List<MovementReport> findByAccountIdAndDate();
+    List<MovementReport> findByAccountIdAndDate(Integer accountId,LocalDate startDate, LocalDate endDate);
 }

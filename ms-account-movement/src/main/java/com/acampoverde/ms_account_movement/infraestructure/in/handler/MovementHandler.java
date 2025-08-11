@@ -7,7 +7,6 @@ import com.acampoverde.ms_account_movement.infraestructure.in.dto.MovementDto;
 import com.acampoverde.ms_account_movement.infraestructure.in.dto.MovementReportDto;
 import com.acampoverde.ms_account_movement.infraestructure.in.mapper.IMovementMapper;
 import com.acampoverde.ms_account_movement.infraestructure.in.mapper.IMovementRepo;
-import com.acampoverde.ms_account_movement.infraestructure.out.persistence.entity.MovementReportEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -1,111 +1,114 @@
 package com.acampoverde.ms_account_movement.infraestructure.controller;
 
-
-import com.acampoverde.ms_account_movement.infraestructure.in.controller.AccountController;
 import com.acampoverde.ms_account_movement.infraestructure.in.dto.AccountDto;
 import com.acampoverde.ms_account_movement.infraestructure.in.handler.AccountHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.mockito.Mock;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(AccountController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class AccountControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private ObjectMapper objectMapper; // Para convertir objetos a JSON
+
     @MockBean
     private AccountHandler accountHandler;
 
-    private ObjectMapper objectMapper;
-    private AccountDto mockDto;
-
-    @BeforeEach
-    void setUp() {
-        objectMapper = new ObjectMapper();
-
-        mockDto = new AccountDto();
-        mockDto.setAccountId(1);
-        mockDto.setAccountNumber("1234567890");
-        mockDto.setAccountType("SAVINGS");
-        mockDto.setAvailableBalance(500.0);
-        mockDto.setStatus(true);
-        mockDto.setCustomerId(101);
+    private AccountDto getSampleAccount() {
+        return new AccountDto(
+                1,
+                "123456",
+                "SAVINGS",
+                1000.0,
+                true,
+                101
+        );
     }
 
     @Test
-    void shouldReturnAllAccounts() throws Exception {
-        when(accountHandler.findAllAccount()).thenReturn(List.of(mockDto));
+    @DisplayName("GET /v1/accounts - return list of accounts")
+    void testFindAllAccounts() throws Exception {
+        List<AccountDto> accounts = Arrays.asList(getSampleAccount());
+        when(accountHandler.findAllAccount()).thenReturn(accounts);
 
         mockMvc.perform(get("/v1/accounts"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].accountNumber").value("1234567890"))
-                .andExpect(jsonPath("$", hasSize(1)));
+                .andExpect(jsonPath("$[0].accountNumber").value("123456"));
     }
 
     @Test
-    void shouldReturnAccountById() throws Exception {
-        when(accountHandler.findAccountById(1)).thenReturn(mockDto);
+    @DisplayName("GET /v1/accounts/accountNumber/{accountNumber} - return one account per number")
+    void testFindAccountByNumber() throws Exception {
+        when(accountHandler.findAccountNumberById("123456")).thenReturn(getSampleAccount());
 
-        mockMvc.perform(get("/v1/accounts/1"))
+        mockMvc.perform(get("/v1/accounts/accountNumber/{accountNumber}", "123456"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.accountId").value(1));
+                .andExpect(jsonPath("$.accountType").value("SAVINGS"));
     }
 
     @Test
-    void shouldReturnAccountByAccountNumber() throws Exception {
-        when(accountHandler.findAccountNumberById("1234567890")).thenReturn(mockDto);
+    @DisplayName("GET /v1/accounts/{id} - return one account per ID")
+    void testFindAccountById() throws Exception {
+        when(accountHandler.findAccountById(1)).thenReturn(getSampleAccount());
 
-        mockMvc.perform(get("/v1/accounts/accountNumber/1234567890"))
+        mockMvc.perform(get("/v1/accounts/{id}", 1))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.accountNumber").value("1234567890"));
+                .andExpect(jsonPath("$.availableBalance").value(1000.0));
     }
 
     @Test
-    void shouldCreateAccount() throws Exception {
-        when(accountHandler.saveAccount(any(AccountDto.class))).thenReturn(mockDto);
+    @DisplayName("POST /v1/accounts - create an account")
+    void testSaveAccount() throws Exception {
+        AccountDto request = getSampleAccount();
+        when(accountHandler.saveAccount(any(AccountDto.class))).thenReturn(request);
 
         mockMvc.perform(post("/v1/accounts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(mockDto)))
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("Location"));
     }
 
     @Test
-    void shouldUpdateAccount() throws Exception {
-        when(accountHandler.updateAccount(any(AccountDto.class))).thenReturn(mockDto);
+    @DisplayName("PUT /v1/accounts - update an account")
+    void testUpdateAccount() throws Exception {
+        AccountDto request = getSampleAccount();
+        when(accountHandler.updateAccount(any(AccountDto.class))).thenReturn(request);
 
         mockMvc.perform(put("/v1/accounts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(mockDto)))
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.accountNumber").value("1234567890"));
+                .andExpect(jsonPath("$.status").value(true));
     }
 
     @Test
-    void shouldDeleteAccount() throws Exception {
-        doNothing().when(accountHandler).deleteAccount(1);
+    @DisplayName("DELETE /v1/accounts/{id} - delete an account")
+    void testDeleteAccount() throws Exception {
+        doNothing().when(accountHandler).deleteAccount(eq(1));
 
-        mockMvc.perform(delete("/v1/accounts/1"))
+        mockMvc.perform(delete("/v1/accounts/{id}", 1))
                 .andExpect(status().isNoContent());
     }
 }
-

@@ -10,6 +10,7 @@ import com.acampoverde.ms_account_movement.domain.model.MovementReport;
 import com.acampoverde.ms_account_movement.domain.port.in.IAccountMovementServicePort;
 import com.acampoverde.ms_account_movement.domain.port.out.IAccountMovementRepositoryPort;
 import com.acampoverde.ms_account_movement.domain.port.out.IAccountRepositoryPort;
+import com.acampoverde.ms_account_movement.domain.port.out.IMovementReportRepositoryPort;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,10 +21,12 @@ public class MovementService implements IAccountMovementServicePort {
 
     private final IAccountMovementRepositoryPort accountMovementRepository;
     private final IAccountRepositoryPort accountRepository;
+    private final IMovementReportRepositoryPort accountReportRepository;
 
-    public MovementService(IAccountMovementRepositoryPort accountMovementRepository, IAccountRepositoryPort accountRepository) {
+    public MovementService(IAccountMovementRepositoryPort accountMovementRepository, IAccountRepositoryPort accountRepository,IMovementReportRepositoryPort accountReportRepository) {
         this.accountMovementRepository = accountMovementRepository;
         this.accountRepository = accountRepository;
+        this.accountReportRepository = accountReportRepository;
     }
 
     @Override
@@ -75,11 +78,13 @@ public class MovementService implements IAccountMovementServicePort {
     }
 
     @Override
-    public List<MovementReport> findByAccountIdAndDate(Integer accountId, LocalDate startDate, LocalDate endDate) {
-        return List.of();
+    public List<MovementReport> findByAccountIdAndDate(Integer accountId,LocalDate startDate, LocalDate endDate) {
+        return accountReportRepository.findByAccountIdAndDate(accountId,startDate,endDate);
     }
 
-    public List<MovementReport> getMovementReportByAccountIdAndDate(Integer accountId, LocalDate startDate, LocalDate endDate) {
-        return null;
-    }
+//    @Override
+//    public List<MovementReport> findByAccountIdAndDate(LocalDate startDate, LocalDate endDate) {
+//        return accountReportRepository.findByAccountIdAndDate(startDate,endDate);
+//    }
+
 }

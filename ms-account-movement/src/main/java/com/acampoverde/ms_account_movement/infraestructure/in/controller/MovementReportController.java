@@ -4,7 +4,9 @@ import com.acampoverde.ms_account_movement.application.service.MovementService;
 import com.acampoverde.ms_account_movement.domain.model.MovementReport;
 import com.acampoverde.ms_account_movement.infraestructure.in.dto.MovementReportDto;
 import com.acampoverde.ms_account_movement.infraestructure.in.handler.MovementHandler;
+import com.acampoverde.ms_account_movement.infraestructure.in.handler.MovementReportHanlder;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,19 +18,20 @@ import java.util.List;
 
 @RestController
 @RequestMapping("v1/movements/report")
+@Data
 public class MovementReportController {
 
-    private final MovementService movementService;
+    private final MovementReportHanlder movementService;
 
-    public MovementReportController(MovementService movementService) {
-        this.movementService = movementService;
-    }
 
-    @GetMapping("/v1/movements/report")
-    public List<MovementReport> getMovementReportByAccountIdAndDate(
+
+    @GetMapping
+    public List<MovementReportDto> getMovementReportByAccountIdAndDate(
+
             @RequestParam Integer accountId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        return movementService.getMovementReportByAccountIdAndDate(accountId, startDate, endDate);
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+    ) {
+        return movementService.findByAccountIdAndDate(accountId,startDate,endDate);
     }
 }
